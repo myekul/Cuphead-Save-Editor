@@ -263,7 +263,17 @@ function printLevelData(levelData) {
     const backgroundColors = ["cornflowerblue", "lightcoral", "gold", "grey", "#afe5cb"]
     let levelCount = 0;
     for (let tableIndex = 0; tableIndex < tableLevelCounts.length; tableIndex++) {
-        output += `<table style="color:white;background-color:#434343;"><tr><td colspan=5; style="text-align:center;background-color:${backgroundColors[tableIndex]}">${isles[tableIndex]}</td></tr>`;
+        output +=
+            `<table style="color:white;background-color:#434343;"><tr><td colspan=7; style="text-align:center;background-color:${backgroundColors[tableIndex]}">${isles[tableIndex]}</td></tr>
+        <tr style="font-size:10px;">
+            <td style="text-align:center;width:45px;">Played</td>
+            <td style="text-align:center;width:65px;">Completed</td>
+            <td style="text-align:center;">Grade</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>`;
         for (let i = 0; i < tableLevelCounts[tableIndex]; i++) {
             if (!levelData.isEmpty()) {
                 levelCount++;
@@ -272,6 +282,12 @@ function printLevelData(levelData) {
                 const gradeOptions = grades.map(grade => `<option value="${grade}"${level.getLetterGrade() === grade ? ' selected' : ''}>${grade}</option>`).join('');
                 output +=
                     `<tr>
+                        <td style="text-align:center;">
+                            <input type="checkbox" style="accent-color:var(--cuphead-yellow);" id="played_${level.levelID}" ${level.isPlayed() ? 'checked' : ''}>
+                        </td>
+                        <td style="text-align:center;">
+                            <input type="checkbox" style="accent-color:var(--cuphead-yellow);" id="completed_${level.levelID}" ${level.isCompleted() ? 'checked' : ''}>
+                        </td>
                         <td style="text-align:center;width:50px;">
                             <select id="grade_${level.levelID}">${gradeOptions}</select>
                         </td>
@@ -299,9 +315,11 @@ function updateLevelTime(levelID, value) {
     }
 }
 function modifyFile(file) {
+    const playedInput = document.querySelectorAll('[id^=played_]');
+    const completedInput = document.querySelectorAll('[id^=completed_]');
     const gradeInput = document.querySelectorAll('[id^=grade_]');
     const bestTimeInput = document.querySelectorAll('[id^=bestTime_]');
-    const allInput = [...gradeInput, ...bestTimeInput]
+    const allInput = [...played, ...completed, ...gradeInput, ...bestTimeInput]
     allInput.forEach(input => {
         let elementType = input.id.split("_")[0];
         let levelID = parseInt(input.id.split('_')[1]);
@@ -314,7 +332,7 @@ function modifyFile(file) {
         let value = element.split(`"${elementType}":`)[1].split(",")[0];
         if (elementType == "bestTime") {
             let newValue = input.innerText;
-            if (newValue != ""&&newValue!="?????") {
+            if (newValue != "" && newValue != "?????") {
                 console.log(newValue);
                 newValue = serialize(newValue);
                 if (Math.floor(value * 100) / 100 != newValue) {
