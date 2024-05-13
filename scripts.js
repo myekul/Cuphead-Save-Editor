@@ -164,38 +164,7 @@ class Level {
         }
     }
     getLetterGrade() {
-        switch (this.grade) {
-            case 0:
-                return "D-";
-            case 1:
-                return "D";
-            case 2:
-                return "D+";
-            case 3:
-                return "C-";
-            case 4:
-                return "C";
-            case 5:
-                return "C+";
-            case 6:
-                return "B-";
-            case 7:
-                return "B";
-            case 8:
-                return "B+";
-            case 9:
-                return "A-";
-            case 10:
-                return "A";
-            case 11:
-                return "A+";
-            case 12:
-                return "S";
-            case 13:
-                return "P";
-            default:
-                return null;
-        }
+        return gradeMap.get(this.grade)
     }
     getDifficulty() {
         switch (this.difficultyBeaten) {
@@ -229,41 +198,61 @@ class Level {
         return this.levelPriority;
     }
 }
+const gradeMap = new Map([
+    [0, "D-"],
+    [1, "D"],
+    [2, "D+"],
+    [3, "C-"],
+    [4, "C"],
+    [5, "C+"],
+    [6, "B-"],
+    [7, "B"],
+    [8, "B+"],
+    [9, "A-"],
+    [10, "A"],
+    [11, "A+"],
+    [12, "S"],
+    [13, "P"]
+]);
 function deserialize(value) {
-    let seconds=value.split(".")[0];
-    let minutes = 0;
-    while (seconds>= 60) {
-        console.log(value);
-        seconds -= 60;
-        minutes++;
-    }
-    value = seconds + '.' + value.split('.')[1].slice(0, 2);
-    if (value.split(".")[1]?.length == 1) {
-        value += "0";
-    }
-    if (value < 10) {
-        value = "0" + value;
-    }
-    if (minutes > 0) {
-        value = minutes + ":" + value;
-    }
-    if (!value.includes(".")) {
-        value += ".00";
+    if (value != "?????") {
+        let seconds = value.split(".")[0];
+        let minutes = 0;
+        while (seconds >= 60) {
+            seconds -= 60;
+            minutes++;
+        }
+        value = seconds + '.' + value.split('.')[1].slice(0, 2);
+        if (value.split(".")[1]?.length == 1) {
+            value += "0";
+        }
+        if (minutes > 0) {
+            if (value < 10) {
+                value = "0" + value;
+            }
+            value = minutes + ":" + value;
+        }
+        if (!value.includes(".")) {
+            value += ".00";
+        }
     }
     return value;
 }
 function serialize(value) {
-    if(value.split(":")[1]==""){
+    if (value == "") {
+        return "?????";
+    }
+    if (value.split(":")[1] == "") {
         value += "00";
     }
     if (!value.includes(".")) {
         value += ".00";
     }
-    if(value.split(".")[1]==""){
+    if (value.split(".")[1] == "") {
         value += "00";
     }
     if (value.includes(":")) {
-        value = parseInt(value.split(":")[0]) * 60 + parseInt(value.split(":")[1].split(".")[0])+"."+value.split(".")[1];
+        value = parseInt(value.split(":")[0]) * 60 + parseInt(value.split(":")[1].split(".")[0]) + "." + value.split(".")[1];
     }
     return value;
 }
@@ -281,27 +270,20 @@ function printLevelData(levelData) {
                 const level = levelData.poll();
                 const grades = ['D-', 'D', 'D+', 'C-', 'C', 'C+', 'B-', 'B', 'B+', 'A-', 'A', 'A+', 'S', 'P'];
                 const gradeOptions = grades.map(grade => `<option value="${grade}"${level.getLetterGrade() === grade ? ' selected' : ''}>${grade}</option>`).join('');
-                if (level.isPlayed()) {
-                    if (level.isCompleted()) {
-                        output +=
-                            `<tr>
-                                <td style="text-align:center;width:50px;"><select>${gradeOptions}</select></td>
-                                <td style="text-align:right;width:70px;">
-                                    <input type="text" value="${level.getTime()}" onchange="updateLevelTime(${level.levelID},this.value)">
-                                </td>
-                                <td style="text-align:right;width:70px;">
-                                    <div id="updateOutput_${level.levelID}">${level.getTime()}</div>
-                                </td>
-                                <td style="width:28px;"><img src="mugshots/${levelCount}.png"></td>
-                                <td style="width:200px;">${level.getLevelName()}</td>
-                            </tr>`;
-                    } else {
-                        output += `<tr><td></td><td style="text-align:right;"></td><td>${level.getLevelName()}</td></tr>`;
-                    }
-
-                } else {
-                    output += `<tr><td></td><td style="text-align:right;"></td><td></td></tr>`;
-                }
+                output +=
+                    `<tr>
+                        <td style="text-align:center;width:50px;">
+                            <select id="grade_${level.levelID}">${gradeOptions}</select>
+                        </td>
+                        <td style="text-align:right;width:70px;">
+                            <input type="text" value="${level.getTime()}" onchange="updateLevelTime(${level.levelID},this.value)">
+                        </td>
+                        <td style="text-align:right;width:70px;">
+                            <div id="bestTime_${level.levelID}">${level.getTime()}</div>
+                        </td>
+                        <td style="width:28px;"><img src="mugshots/${levelCount}.png"></td>
+                        <td style="width:200px;">${level.getLevelName()}</td>
+                    </tr>`;
             }
         }
         output += '</table>';
@@ -309,7 +291,7 @@ function printLevelData(levelData) {
     return output;
 }
 function updateLevelTime(levelID, value) {
-    const divId = 'updateOutput_' + levelID;
+    const divId = 'bestTime_' + levelID;
     const updateOutput = document.getElementById(divId);
     if (updateOutput) {
         updateOutput.innerText = deserialize(serialize(value));
@@ -317,23 +299,41 @@ function updateLevelTime(levelID, value) {
     }
 }
 function modifyFile(file) {
-    const bestTimeDivs = document.querySelectorAll('[id^=updateOutput_]');
-    bestTimeDivs.forEach(div => {
-        newTime = serialize(div.innerText);
-        let levelID = parseInt(div.id.split('_')[1]);
+    const gradeInput = document.querySelectorAll('[id^=grade_]');
+    const bestTimeInput = document.querySelectorAll('[id^=bestTime_]');
+    const allInput = [...gradeInput, ...bestTimeInput]
+    allInput.forEach(input => {
+        let elementType = input.id.split("_")[0];
+        let levelID = parseInt(input.id.split('_')[1]);
         let prev = file.split("levelObjects")[0];
         let levelObjects = file.split("levelObjects")[1];
         let temp1 = levelObjects.split('"levelID":' + levelID)[0];
-        let level = levelObjects.split('"levelID":' + levelID)[1];
-        let temp3 = level.split('"bestTime":')[0];
-        let temp4 = level.substring(level.indexOf('"bestTime":') + 1).trim();
-        let oldTime = level.split('"bestTime":')[1].split(",")[0];
-        let time = oldTime;
-        if (Math.floor(oldTime * 100) / 100 != newTime) {
-            time = newTime;
+        let element = levelObjects.split('"levelID":' + levelID)[1];
+        let temp3 = element.split(`"${elementType}":`)[0];
+        let temp4 = element.substring(element.indexOf(`"${elementType}":`) + 1).trim();
+        let value = element.split(`"${elementType}":`)[1].split(",")[0];
+        if (elementType == "bestTime") {
+            let newValue = input.innerText;
+            if (newValue != ""&&newValue!="?????") {
+                console.log(newValue);
+                newValue = serialize(newValue);
+                if (Math.floor(value * 100) / 100 != newValue) {
+                    value = newValue;
+                }
+            }
+        } else {
+            let newValue = input.options[input.selectedIndex].value;
+            for (const [number, letterGrade] of gradeMap.entries()) {
+                if (newValue === letterGrade) {
+                    newValue = number;
+                }
+            }
+            if (value != newValue) {
+                value = newValue;
+            }
         }
         let temp5 = temp4.substring(temp4.indexOf(',') + 1).trim();
-        file = prev + "levelObjects" + temp1 + '"levelID":' + levelID + temp3 + '"bestTime":' + time + "," + temp5;
+        file = prev + "levelObjects" + temp1 + '"levelID":' + levelID + temp3 + `"${elementType}":` + value + "," + temp5;
     });
     return file;
 }
@@ -350,7 +350,7 @@ function downloadFile(content, filename) {
 }
 const fileInput = document.getElementById('fileInput');
 const output = document.getElementById('output');
-let fileName="";
+let fileName = "";
 let fileContents = "";
 
 fileInput.addEventListener('change', (event) => {
@@ -359,7 +359,7 @@ fileInput.addEventListener('change', (event) => {
 
     reader.onload = function (e) {
         fileContents += e.target.result;
-        fileName+=file.name;
+        fileName += file.name;
         if (fileName.includes("cuphead_player_data_v1_slot_")) {
 
             let levelArray = fileContents.split("levelObjects\"")[1].split("levelID\":");
@@ -398,5 +398,5 @@ fileInput.addEventListener('change', (event) => {
 });
 document.getElementById('downloadButton').addEventListener('click', function () {
     let modifiedFileContent = modifyFile(fileContents);
-    downloadFile(modifiedFileContent,fileName);
+    downloadFile(modifiedFileContent, fileName);
 });
