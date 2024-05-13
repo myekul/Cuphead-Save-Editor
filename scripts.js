@@ -212,7 +212,7 @@ class Level {
     getTime() {
         let output = "";
         if (this.bestTime !== "3.4028234663852887e38") {
-            output = mathing(this.bestTime);
+            output = deserialize(this.bestTime);
         }
         return output;
     }
@@ -229,19 +229,19 @@ class Level {
         return this.levelPriority;
     }
 }
-function mathing(value) {
-    let seconds = parseFloat(value);
+function deserialize(value) {
+    let seconds=value.split(".")[0];
     let minutes = 0;
-    while (seconds >= 60) {
+    while (seconds>= 60) {
+        console.log(value);
         seconds -= 60;
         minutes++;
     }
-    seconds = Math.floor(seconds * 100) / 100;
-    value = seconds.toString();
-    if (value.split(".")[1]?.length === 1) {
+    value = seconds + '.' + value.split('.')[1].slice(0, 2);
+    if (value.split(".")[1]?.length == 1) {
         value += "0";
     }
-    if (seconds < 10) {
+    if (value < 10) {
         value = "0" + value;
     }
     if (minutes > 0) {
@@ -252,12 +252,18 @@ function mathing(value) {
     }
     return value;
 }
-function floatify(value) {
-    if (value.includes(":")) {
-        value = parseInt(value.split(":")[0]) * 60 + parseFloat(value.split(":")[1]);
+function serialize(value) {
+    if(value.split(":")[1]==""){
+        value += "00";
     }
-    if (!value.toString().includes(".")) {
+    if (!value.includes(".")) {
         value += ".00";
+    }
+    if(value.split(".")[1]==""){
+        value += "00";
+    }
+    if (value.includes(":")) {
+        value = parseInt(value.split(":")[0]) * 60 + parseInt(value.split(":")[1].split(".")[0])+"."+value.split(".")[1];
     }
     return value;
 }
@@ -306,20 +312,17 @@ function updateLevelTime(levelID, value) {
     const divId = 'updateOutput_' + levelID;
     const updateOutput = document.getElementById(divId);
     if (updateOutput) {
-        if (value.includes(":")) {
-            value = parseInt(value.split(":")[0]) * 60 + parseInt(value.split(":")[1].split(".")[0]) + "." + value.split(".")[1];
-        }
-        updateOutput.innerText = mathing(value);
+        updateOutput.innerText = deserialize(serialize(value));
         updateOutput.style = "color:black;background-color:var(--cuphead-yellow);";
     }
 }
 function modifyFile(file) {
     const bestTimeDivs = document.querySelectorAll('[id^=updateOutput_]');
     bestTimeDivs.forEach(div => {
-        newTime = floatify(div.innerText);
+        newTime = serialize(div.innerText);
         let levelID = parseInt(div.id.split('_')[1]);
-        let prev = file.split('"levelObjects":')[0];
-        let levelObjects = file.split('"levelObjects":')[1];
+        let prev = file.split("levelObjects")[0];
+        let levelObjects = file.split("levelObjects")[1];
         let temp1 = levelObjects.split('"levelID":' + levelID)[0];
         let level = levelObjects.split('"levelID":' + levelID)[1];
         let temp3 = level.split('"bestTime":')[0];
@@ -330,7 +333,7 @@ function modifyFile(file) {
             time = newTime;
         }
         let temp5 = temp4.substring(temp4.indexOf(',') + 1).trim();
-        file = prev + '"levelObjects":' + temp1 + '"levelID":' + levelID + temp3 + '"bestTime":' + time + "," + temp5;
+        file = prev + "levelObjects" + temp1 + '"levelID":' + levelID + temp3 + '"bestTime":' + time + "," + temp5;
     });
     return file;
 }
