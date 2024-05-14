@@ -1,5 +1,6 @@
 :root {
     --cuphead-yellow: #ffcd00;
+    --gray:#434343;
 }
 
 @font-face{
@@ -19,19 +20,25 @@ table {
 
 td {
     border: 2px solid white;
-    padding: 1%;
-}
-td:nth-child(6) {
     padding:0;
-    padding-top:.7%;
-    padding-left:.5%;
+}
+td:nth-child(7) {
+    padding-top:.5%;
+    /* padding-left:.5%; */
     vertical-align:bottom;
+    text-align:center;
 }
 
 img{
     width:25px;
 }
 
-input[type="text"] {
+input[type="text"]{
+    font-family:"cuphead-memphis";
+    background-color:var(--cuphead-yellow);
     width: 50px;
+}
+select{
+    font-family:"cuphead-memphis";
+    background-color:var(--cuphead-yellow);
 }
