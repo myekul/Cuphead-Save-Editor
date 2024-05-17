@@ -1,15 +1,17 @@
 :root {
-    --cuphead-yellow: #ffcd00;
-    --gray:#434343;
+    --cuphead-yellow: #ffcf10;
+    --cuphead-green:#a0e1c0;
+    --dlc-font: #433650;
+    --gray: #434343;
 }
 
-@font-face{
-    font-family:"cuphead-memphis";
+@font-face {
+    font-family: "cuphead-memphis";
     src: url("fonts/cuphead-memphis.ttf") format("truetype");
 }
 
 body {
-    font-family:"cuphead-memphis";
+    font-family: "cuphead-memphis";
     color: white;
 }
 
@@ -20,25 +22,31 @@ table {
 
 td {
     border: 2px solid white;
-    padding:0;
+    padding: 0;
 }
+
 td:nth-child(7) {
-    padding-top:.5%;
+    padding-top: .5%;
     /* padding-left:.5%; */
-    vertical-align:bottom;
-    text-align:center;
+    vertical-align: bottom;
+    text-align: center;
 }
 
-img{
-    width:25px;
+img {
+    width: 25px;
 }
 
-input[type="text"]{
-    font-family:"cuphead-memphis";
-    background-color:var(--cuphead-yellow);
+input[type="text"] {
+    font-family: "cuphead-memphis";
     width: 50px;
 }
-select{
-    font-family:"cuphead-memphis";
-    background-color:var(--cuphead-yellow);
+
+select {
+    font-family: "cuphead-memphis";
+}
+
+.changed {
+    color: black;
+    background-color: var(--cuphead-yellow);
+    accent-color:var(--cuphead-yellow);
 }

@@ -155,11 +155,7 @@ class Level {
         return difficultyBeatenMap.get(this.difficultyBeaten)
     }
     getTime() {
-        let output = "";
-        if (this.bestTime !== "3.4028234663852887e38") {
-            output = deserialize(this.bestTime);
-        }
-        return output;
+        return this.bestTime !== "3.4028234663852887e38" ? deserialize(this.bestTime) : ""
     }
     isPlayed() {
         return this.played;
