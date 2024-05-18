@@ -40,9 +40,8 @@ function serialize(value) {
 }
 function display(value) {
     if (value == "") {
-        return "?????";
+        return "?";
     }
-    
     if (!value.includes(":")) {
         if(value<10){
             value="0"+value;

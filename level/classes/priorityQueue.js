@@ -4,7 +4,7 @@ class PriorityQueue {
     }
     add(item) {
         this.data.push(item);
-        this.data.sort((a, b) => a.getlevelPriority() - b.getlevelPriority());
+        this.data.sort((a, b) => a.getPriority() - b.getPriority());
     }
     poll() {
         return this.data.shift();

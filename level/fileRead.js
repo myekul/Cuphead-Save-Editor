@@ -34,11 +34,17 @@ fileInput.addEventListener('change', (event) => {
                 }
                 const bgmPlayListCurrent = parseInt(levelArray[11].split(",")[0]);
                 const level = new Level(levelID, booleanArray, grade, difficultyBeaten, bestTime, bgmPlayListCurrent);
-                if (level.getLevelName() !== null) {
+                if (level.getName() !== null) {
                     levelData.add(level);
                 }
             }
             output.innerHTML = printLevelData(levelData);
+            playedInput = document.querySelectorAll('[id^=played_]');
+            completedInput = document.querySelectorAll('[id^=completed_]');
+            difficultyBeatenInput = document.querySelectorAll('[id^=difficultyBeaten_]');
+            gradeInput = document.querySelectorAll('[id^=grade_]');
+            bestTimeInput = document.querySelectorAll('[id^=bestTime_]');
+            allInput = [...playedInput, ...completedInput, ...difficultyBeatenInput, ...gradeInput, ...bestTimeInput];
         }
         else {
             output.innerHTML = "Wrong file type!";

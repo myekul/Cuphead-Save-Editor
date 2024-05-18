@@ -1,10 +1,5 @@
 function modifyFile(file) {
-    const playedInput = document.querySelectorAll('[id^=played_]');
-    const completedInput = document.querySelectorAll('[id^=completed_]');
-    const difficultyBeatenInput = document.querySelectorAll('[id^=difficultyBeaten_]');
-    const gradeInput = document.querySelectorAll('[id^=grade_]');
-    const bestTimeInput = document.querySelectorAll('[id^=bestTime_]');
-    const allInput = [...playedInput, ...completedInput, ...difficultyBeatenInput, ...gradeInput, ...bestTimeInput]
+    
     let prev = file.split("levelObjects")[0];
     allInput.forEach(input => {
         let elementType = input.id.split("_")[0];
@@ -17,13 +12,13 @@ function modifyFile(file) {
         let element = level.split(`"${elementType}":`)[1].split(",")[0];
         let newValue = "";
         if (elementType == "bestTime") {
-            newValue = input.value;
+            newValue = serialize(input.value);
             if (newValue != "") {
-                if (Math.floor(element * 100) / 100 != serialize(newValue)) {
+                if (Math.floor(element * 100) / 100 != newValue) {
                     element = newValue;
                 }
-            }else{
-                element="3.4028234663852887e38";
+            } else {
+                element = "3.4028234663852887e38";
             }
         } else {
             if (elementType == "grade" || elementType == "difficultyBeaten") {
