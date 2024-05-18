@@ -1,6 +1,6 @@
 :root {
     --cuphead-yellow: #ffcf10;
-    --cuphead-green:#a0e1c0;
+    --cuphead-green: #a0e1c0;
     --dlc-font: #433650;
     --gray: #434343;
 }
@@ -16,18 +16,20 @@ body {
 }
 
 table {
+    background-color: var(--gray);
     border-collapse: collapse;
-    /* width:20%; */
+    margin-left: auto;
+    margin-right: auto;
 }
 
 td {
+    text-align:center;
     border: 2px solid white;
     padding: 0;
 }
 
 td:nth-child(7) {
-    padding-top: .5%;
-    /* padding-left:.5%; */
+    padding-top: .6%;
     vertical-align: bottom;
     text-align: center;
 }
@@ -41,6 +43,10 @@ input[type="text"] {
     width: 50px;
 }
 
+input[type="checkbox"] {
+    accent-color: var(--cuphead-yellow);
+}
+
 select {
     font-family: "cuphead-memphis";
 }
@@ -48,5 +54,4 @@ select {
 .changed {
     color: black;
     background-color: var(--cuphead-yellow);
-    accent-color:var(--cuphead-yellow);
 }

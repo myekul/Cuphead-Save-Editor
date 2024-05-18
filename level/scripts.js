@@ -1,23 +1,23 @@
 const levelCounts = [7, 7, 9, 2, 6];
 const isles = ["Inkwell Isle 1", "Inkwell Isle 2", "Inkwell Isle 3", "Inkwell Hell", "Inkwell Isle 4"];
 const colors = ["white", "white", "black", "white", "var(--dlc-font)"];
-const backgroundColors = ["cornflowerblue", "lightcoral", "gold", "grey", "#afe5cb"];
+const backgroundColors = ["cornflowerblue", "lightcoral", "var(--cuphead-yellow)", "grey", "#afe5cb"];
 function printLevelData(levelData) {
     let output = '';
     let levelCount = 0;
     for (let levelIndex = 0; levelIndex < levelCounts.length; levelIndex++) {
         output +=
-            `<table style="color:white;background-color:var(--gray);">
+            `<table>
             <tr>
-                <td colspan=8; style="text-align:center;color:${colors[levelIndex]};background-color:${backgroundColors[levelIndex]};">${isles[levelIndex]}</td>
+                <td colspan=8; style="color:${colors[levelIndex]};background-color:${backgroundColors[levelIndex]};">${isles[levelIndex]}</td>
             </tr>
-            <tr style="font-size:10px;">
-                <td style="text-align:center;width:45px;">Played</td>
-                <td style="text-align:center;width:65px;">Completed</td>
-                <td style="text-align:center;width:90px;">Difficulty</td>
-                <td style="text-align:center;width:55px;">Grade</td>
-                <td style="text-align:center;width:70px;">Time</td>
-                <td style="text-align:center;width:50px;">In-game</td>
+            <tr style="font-size:9px;">
+                <td style="width:60px;">Played</td>
+                <td style="width:60px;">Completed</td>
+                <td style="width:90px;">Difficulty</td>
+                <td style="width:55px;">Grade</td>
+                <td style="width:70px;">Time</td>
+                <td style="width:50px;">In-game</td>
                 <td style="width:28px;"></td>
                 <td style="width:200px;"></td>
             </tr>`;
@@ -30,26 +30,26 @@ function printLevelData(levelData) {
                 const difficultyBeatenOptions = [...difficultyBeatenMap.values()].map(difficultyBeaten => `<option value="${difficultyBeaten}"${level.getDifficultyBeaten() === difficultyBeaten ? ' selected' : ''}>${difficultyBeaten}</option>`).join('');
                 output +=
                     `<tr>
-                        <td style="text-align:center;">
-                            <input type="checkbox" style="accent-color:var(--cuphead-yellow);" id="played_${levelID}" onchange="checkCompletion();" ${level.isPlayed() ? 'checked' : ''}>
+                        <td>
+                            <input type="checkbox" id="played_${levelID}" onchange="checkCompletion();" ${level.isPlayed() ? 'checked' : ''}>
                         </td>
-                        <td style="text-align:center;">
-                            <input type="checkbox" style="accent-color:var(--cuphead-yellow);" id="completed_${levelID}" onchange="checkCompletion();" ${level.isCompleted() ? 'checked' : ''}>
+                        <td>
+                            <input type="checkbox" id="completed_${levelID}" onchange="checkCompletion();" ${level.isCompleted() ? 'checked' : ''}>
                         </td>
-                        <td style="text-align:center;">
+                        <td>
                             <select id="difficultyBeaten_${levelID}" onchange="difficultyBeaten_${levelID}.classList.add('changed')">${difficultyBeatenOptions}</select>
                         </td>
-                        <td style="text-align:center;">
+                        <td>
                             <select id="grade_${levelID}" onchange="grade_${levelID}.classList.add('changed')">${gradeOptions}</select>
                         </td>
-                        <td style="text-align:center;">
-                            <input id="bestTime_${levelID}" type="text" value="${level.getTime()}" onchange="updatebestTime(${levelID},this.value);" oninput="updateDisplayTime(${levelID},this.value);">
+                        <td>
+                            <input id="bestTime_${levelID}" type="text" value="${level.getTime()}" onchange="updateBestTime(${levelID},this.value);" oninput="updateDisplayTime(${levelID},this.value);">
                         </td>
                         <td style="text-align:right;padding-left:1%;padding-right:1%;">
                             <div id="displayTime_${levelID}">${display(level.getTime())}</div>
                         </td>
                         <td><img src="mugshots/${levelCount}.png"></td>
-                        <td style="padding-left:1%;">${level.getName()}</td>
+                        <td style="text-align:left;padding-left:1%;">${level.getName()}</td>
                     </tr>`;
             }
         }
@@ -81,26 +81,25 @@ function checkCompletion() {
         let levelID = parseInt(input.id.split('_')[1]);
         let bestTime = document.getElementById("bestTime_" + levelID);
         input.innerText = display(deserialize(serialize(bestTime.value)));
+        // Applying question marks for unchecked played and completion boxes
+        let played = document.getElementById("played_" + levelID);
+        let completed = document.getElementById("completed_" + levelID);
+        if (!played.checked || !completed.checked) {
+            input.innerText = "?";
+        }
     });
-    // Applying question marks where necessary
+    // Applying question marks for incomplete isles
     if (!isleClearedCheck) {
         displayTimeInput.forEach(input => {
-            // For incomplete isles
             let levelID = parseInt(input.id.split('_')[1]);
             let isle = levelMap[levelID];
             if (isle.isle > currentIsle) {
                 input.innerText = "?";
             }
-            // For unchecked played and completion boxes
-            let played = document.getElementById("played_" + levelID);
-            let completed = document.getElementById("completed_" + levelID);
-            if (!played.checked || !completed.checked) {
-                input.innerText = "?";
-            }
         });
     }
 }
-function updatebestTime(levelID, value) {
+function updateBestTime(levelID, value) {
     const bestTime = document.getElementById("bestTime_" + levelID);
     bestTime.value = deserialize(serialize(value));
     bestTime.classList.add("changed");
