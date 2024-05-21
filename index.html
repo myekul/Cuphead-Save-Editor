@@ -10,16 +10,33 @@
     <input type="file" id="fileInput">
     <button id="downloadButton">Download Modified File</button>
     <br>
+    <br>
+    <div id="tabStuff" class="tabs">
+        <ul class="tab-links">
+            <li class="active"><a href="#levelTab">Level</a></li>
+            <li><a href="#playerTab">Inventory</a></li>
+            <li><a href="#tab3">Tab 3</a></li>
+        </ul>
+
+        <div class="tab-content">
+            <div id="levelTab" class="tab active"></div>
+            <div id="playerTab" class="tab"></div>
+            <div id="tab3" class="tab"></div>
+        </div>
+    </div>
     <div id="output"></div>
+    <script src="scripts.js"></script>
     <script src="level/conversion.js"></script>
     <script src="maps.js"></script>
-    <script src="level/classes/level.js"></script>
-    <script src="level/classes/priorityQueue.js"></script>
+    <script src="classes/level.js"></script>
+    <script src="classes/player.js"></script>
+    <script src="classes/priorityQueue.js"></script>
     <script src="level/variables.js"></script>
     <script src="level/check.js"></script>
-    <script src="level/main.js"></script>
+    <script src="level/levelTab.js"></script>
+    <script src="player/playerTab.js"></script>
     <script src="fileRead.js"></script>
-    <script src="level/fileWrite.js"></script>
+    <script src="fileWrite.js"></script>
 </body>
 
 </html>

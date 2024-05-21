@@ -78,7 +78,3 @@ function downloadFile(content) {
     document.body.removeChild(a);
     URL.revokeObjectURL(url);
 }
-document.getElementById('downloadButton').addEventListener('click', function () {
-    const modifiedFile = modifyFile(fileContents);
-    downloadFile(modifiedFile, fileName);
-});

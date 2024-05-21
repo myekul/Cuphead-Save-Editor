@@ -1,5 +1,7 @@
 const fileInput = document.getElementById('fileInput');
-const output = document.getElementById('output');
+const tabStuff = document.getElementById('tabStuff');
+const levelTab = document.getElementById('levelTab');
+const playerTab = document.getElementById('playerTab');
 
 // Listens to "fileInput" HTML element for change
 fileInput.addEventListener('change', (event) => {
@@ -8,17 +10,16 @@ fileInput.addEventListener('change', (event) => {
 
     let fileName = "";
     let fileContents = "";
-    output.innerHTML = "";
 
     reader.onload = function (e) {
         fileName += file.name;
         if (fileName.includes("cuphead_player_data_v1_slot_")) {
             fileContents += e.target.result;
-            // readPlayerData(fileContents);
+            readPlayerData(fileContents);
             readLevelData(fileContents);
         }
         else {
-            output.innerHTML = "Wrong file type!";
+            tabStuff.innerHTML = "Wrong file type!";
         }
     };
     reader.readAsText(file);
@@ -77,7 +78,7 @@ function readPlayerData(fileContents) {
 
     playerData[0] = new Player(loadout_P1, money_P1, newPurchase_P1, weapons_P1, supers_P1, charms_P1, statictics_P1);
     playerData[1] = new Player(loadout_P2, money_P2, newPurchase_P2, weapons_P2, supers_P2, charms_P2, statictics_P2);
-    output.innerHTML=printPlayerData(playerData);
+    playerTab.innerHTML=printPlayerData(playerData);
 }
 function readLevelData(fileContents) {
     let levelArray = fileContents.split("levelObjects")[1].split('levelID":');
@@ -106,7 +107,7 @@ function readLevelData(fileContents) {
             levelData.add(level);
         }
     }
-    output.innerHTML = printLevelData(levelData);
+    levelTab.innerHTML = printLevelData(levelData);
     playedInput = document.querySelectorAll('[id^=played_]');
     completedInput = document.querySelectorAll('[id^=completed_]');
     difficultyBeatenInput = document.querySelectorAll('[id^=difficultyBeaten_]');

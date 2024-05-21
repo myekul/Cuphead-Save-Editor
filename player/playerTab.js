@@ -9,14 +9,13 @@ function aPlayer(playerData, player) {
     let output=`<div class="flex-item">`;
     const weaponIDs = Array.from(weaponMap.keys()).map(String);
     const charmIDs = Array.from(charmMap.keys()).map(String);
-    output+=nineTable(playerData,player,"weapon",weaponIDs);
+    output+=nineTable(playerData,player,"weapon",weaponIDs)+`<br>`;
     output+=nineTable(playerData,player,"charm",charmIDs);
     output+=`</div>`;
     return output;
 }
 function nineTable(playerData,player,elementType,IDs) {
-    let clickClass = "";
-    let output = createTable()
+    let output = createTable()+`<tr><td colspan=5>${elementType.toUpperCase()}</td></tr><tr>`;
     for (i = 0; i < 5; i++) {
         let clickClass = "clicked";
         if (elementType == "weapon") {
@@ -32,7 +31,7 @@ function nineTable(playerData,player,elementType,IDs) {
     }
     output +=
         `</tr>
-        </table>`+ createTable();
+        </table>`+ createTable()+`<tr>`;
     for (i = 5; i < 9; i++) {
         let clickClass = "clicked";
         if (elementType == "weapon") {
@@ -52,11 +51,10 @@ function nineTable(playerData,player,elementType,IDs) {
     return output;
 }
 function createTable() {
-    return `<table class="inventoryTable">
-    <tr>`;
+    return `<table class="inventoryTable">`;
 }
 function createImage(elementType,player, id, imageID, clickClass) {
-    return `<td id="${player}_${elementType}_${id}"><img src="images/${elementType}s/${imageID + 1}.png" class="${clickClass}" onclick="clicked('${elementType}','${player}',${id})" draggable="false"></td>`;
+    return `<td id="${player}_${elementType}_${id}"><img src="player/images/${elementType}s/${imageID + 1}.png" class="${clickClass}" onclick="clicked('${elementType}','${player}',${id})" draggable="false"></td>`;
 }
 function clicked(elementType,player, id) {
     element = document.getElementById(player + "_"+elementType+"_" + id);
