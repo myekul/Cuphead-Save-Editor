@@ -1,5 +1,4 @@
 function modifyFile(file) {
-    
     let prev = file.split("levelObjects")[0];
     allInput.forEach(input => {
         let elementType = input.id.split("_")[0];

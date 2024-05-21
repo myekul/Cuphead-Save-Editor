@@ -1,3 +1,4 @@
+// Converts save file bestTime to a m:ss.ms or ss.ms duration
 function deserialize(value) {
     if (value == "") {
         return "";
@@ -20,6 +21,7 @@ function deserialize(value) {
     }
     return value;
 }
+// Converts m:ss.ms duration into a s.ms float value
 function serialize(value) {
     if (value == "") {
         return "";
@@ -38,6 +40,7 @@ function serialize(value) {
     }
     return value;
 }
+// Converts m:ss.ms duration into a m:ss duration
 function display(value) {
     if (value == "") {
         return "?";

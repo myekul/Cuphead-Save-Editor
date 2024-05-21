@@ -12,30 +12,27 @@
 
 body {
     font-family: "cuphead-memphis";
+    background-color: var(--gray);
     color: white;
 }
 
 table {
-    background-color: var(--gray);
     border-collapse: collapse;
     margin-left: auto;
     margin-right: auto;
 }
 
-td {
-    text-align:center;
+#levelTable td {
+    text-align: center;
     border: 2px solid white;
     padding: 0;
 }
 
-td:nth-child(7) {
-    padding-top: .6%;
-    vertical-align: bottom;
+#levelTable td:nth-child(7) {
+    vertical-align: middle;
     text-align: center;
-}
-
-img {
-    width: 25px;
+    padding: .3%;
+    width: 34px;
 }
 
 input[type="text"] {
@@ -51,7 +48,52 @@ select {
     font-family: "cuphead-memphis";
 }
 
+img {
+    display: block;
+    margin: auto;
+}
+
+.inventoryTable td {
+    width: 82px;
+    height: 80px;
+    position: relative;
+}
+
+.inventoryTable img:hover {
+    width: 80px;
+}
+
+.inventoryTable img {
+    width: 70px;
+    transition: width 0.1s ease;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
 .changed {
     color: black;
     background-color: var(--cuphead-yellow);
+}
+
+.unclicked {
+    filter: contrast(100%);
+}
+
+.clicked {
+    filter: contrast(25%);
+}
+
+#flex-container {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    margin: auto;
+}
+
+.flex-item {
+    width: 45%;
 }
