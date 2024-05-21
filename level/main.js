@@ -48,7 +48,7 @@ function printLevelData(levelData) {
                         <td style="text-align:right;padding-left:1%;padding-right:1%;">
                             <div id="displayTime_${levelID}">${display(level.getTime())}</div>
                         </td>
-                        <td><img src="mugshots/${levelCount}.png" style="width: 31px;"></td>
+                        <td><img src="level/mugshots/${levelCount}.png" style="width: 31px;"></td>
                         <td style="text-align:left;padding-left:1%;">${level.getName()}</td>
                     </tr>`;
             }
