@@ -12,9 +12,6 @@ class Level {
         this.curseCharmP2 = booleanArray[5];
         this.bgmPlayListCurrent = bgmPlayListCurrent;
     }
-    getLevelID(){
-        return this.levelID;
-    }
     getName(){
         if(levelMap[this.levelID]){
             const levelInfo = levelMap[this.levelID]
@@ -30,15 +27,6 @@ class Level {
     }
     getTime() {
         return this.bestTime !== "3.4028234663852887e38" ? deserialize(this.bestTime) : ""
-    }
-    isPlayed() {
-        return this.played;
-    }
-    isCompleted() {
-        return this.completed;
-    }
-    getIsle() {
-        return this.isle;
     }
     getLevelType() {
         const levelInfo = levelMap[this.levelID];

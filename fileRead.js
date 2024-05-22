@@ -1,15 +1,17 @@
 const fileInput = document.getElementById('fileInput');
 const tabStuff = document.getElementById('tabStuff');
 const levelTab = document.getElementById('levelTab');
-const playerTab = document.getElementById('playerTab');
-
+const inventoryTab = document.getElementById('inventoryTab');
+const downloadButton = document.getElementById('downloadButton');
+let fileName = "";
+let fileContents = "";
 // Listens to "fileInput" HTML element for change
 fileInput.addEventListener('change', (event) => {
     const file = event.target.files[0];
     const reader = new FileReader();
 
-    let fileName = "";
-    let fileContents = "";
+    fileName = "";
+    fileContents = "";
 
     reader.onload = function (e) {
         fileName += file.name;
@@ -17,8 +19,16 @@ fileInput.addEventListener('change', (event) => {
             fileContents += e.target.result;
             readPlayerData(fileContents);
             readLevelData(fileContents);
+            downloadButton.innerHTML = `<button id="downloadButton">Download Modified File</button>`;
+            tabStuff.classList.add("active");
+            const tabs = document.querySelectorAll('.tab-links');
+            const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+            checkboxes.forEach(checkbox => {
+                checkbox.addEventListener('click', playSound);
+            });
         }
         else {
+            downloadButton.innerHTML = "";
             tabStuff.innerHTML = "Wrong file type!";
         }
     };
@@ -31,37 +41,29 @@ function readPlayerData(fileContents) {
     let loadout_P1 = [];
     let loadout_P2 = [];
     let loadoutArray = fileContents.replace("}", "").split('loadouts":')[1].split(":");
-
     for (let i = 0; i < 4; i++) {
         loadout_P1[i] = parseInt(loadoutArray[i + 2].split(",")[0]);
     }
-
     for (let i = 0; i < 4; i++) {
         loadout_P2[i] = parseInt(loadoutArray[i + 7].split(",")[0]);
     }
-
     // Inventories
     let inventoryArray = fileContents.replace("}", "").split('inventories":')[1].split(":");
-    let money_P1 = 0;
-    let money_P2 = 0;
-    let newPurchase_P1 = false;
-    let newPurchase_P2 = false;
 
-    money_P1 = parseInt(inventoryArray[3].split(",")[0]);
+    let money_P1 = parseInt(inventoryArray[3].split(",")[0]);
+    let newPurchase_P1 = false;
     if (inventoryArray[4].split(",")[0] === "true") {
         newPurchase_P1 = true;
     }
-
     let weapons_P1 = inventoryArray[5].split("[")[1].split("]")[0].split(",");
     let supers_P1 = inventoryArray[6].split("[")[1].split("]")[0].split(",");
     let charms_P1 = inventoryArray[7].split("[")[1].split("]")[0].split(",");
 
-
-    money_P2 = parseInt(inventoryArray[9].split(",")[0]);
+    let money_P2 = parseInt(inventoryArray[9].split(",")[0]);
+    let newPurchase_P2 = false;
     if (inventoryArray[10].split(",")[0] === "true") {
         newPurchase_P2 = true;
     }
-
     let weapons_P2 = inventoryArray[11].split("[")[1].split("]")[0].split(",");
     let supers_P2 = inventoryArray[12].split("[")[1].split("]")[0].split(",");
     let charms_P2 = inventoryArray[13].split("[")[1].split("]")[0].split(",");
@@ -78,7 +80,8 @@ function readPlayerData(fileContents) {
 
     playerData[0] = new Player(loadout_P1, money_P1, newPurchase_P1, weapons_P1, supers_P1, charms_P1, statictics_P1);
     playerData[1] = new Player(loadout_P2, money_P2, newPurchase_P2, weapons_P2, supers_P2, charms_P2, statictics_P2);
-    playerTab.innerHTML=printPlayerData(playerData);
+
+    inventoryTab.innerHTML = printInventoryData(playerData);
 }
 function readLevelData(fileContents) {
     let levelArray = fileContents.split("levelObjects")[1].split('levelID":');
@@ -97,8 +100,8 @@ function readLevelData(fileContents) {
         const difficultyBeaten = parseInt(dataArray[6].split(",")[0]);
         const bestTime = dataArray[7].split(",")[0];
         for (let j = 8; j < 10; j++) {
-            if (dataArray[j + 1].split(",")[0] === "true") {
-                booleanArray[j] = true;
+            if (dataArray[j].split(",")[0] === "true") {
+                booleanArray[j - 4] = true;
             }
         }
         const bgmPlayListCurrent = parseInt(levelArray[11].split(",")[0]);
@@ -113,6 +116,8 @@ function readLevelData(fileContents) {
     difficultyBeatenInput = document.querySelectorAll('[id^=difficultyBeaten_]');
     gradeInput = document.querySelectorAll('[id^=grade_]');
     bestTimeInput = document.querySelectorAll('[id^=bestTime_]');
-    allInput = [...playedInput, ...completedInput, ...difficultyBeatenInput, ...gradeInput, ...bestTimeInput];
+    curseCharmP1Input = document.querySelectorAll('[id^=curseCharmP1_]');
+    curseCharmP2Input = document.querySelectorAll('[id^=curseCharmP2_]');
+    allInput = [...playedInput, ...completedInput, ...difficultyBeatenInput, ...gradeInput, ...bestTimeInput, ...curseCharmP1Input, ...curseCharmP2Input];
     checkCompletion();
 }

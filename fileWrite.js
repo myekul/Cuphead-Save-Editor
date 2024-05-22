@@ -34,7 +34,6 @@ function modifyLevels(file) {
                 newValue += input.checked;
             }
             if (element != newValue) {
-                console.log("modified");
                 element = newValue;
             }
         }
@@ -42,4 +41,13 @@ function modifyLevels(file) {
         file = prev + "levelObjects" + beforeID + '"levelID":' + levelID + temp3 + `"${elementType}":` + element + "," + temp5;
     });
     return file;
+}
+function modifyInventory(file) {
+    let prev = file.split("loadouts")[0];
+    let loadouts = file.split("loadouts")[1];
+    loadout("p1", file);
+    loadout("p2", file);
+}
+function loadout(player, file) {
+    
 }

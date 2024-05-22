@@ -6,21 +6,28 @@
 </head>
 
 <body>
+    <audio id="cardflip" src="sfx/cardflip.wav"></audio>
+    <audio id="cardup" src="sfx/cardup.wav"></audio>
+    <audio id="category_select" src="sfx/category_select.wav"></audio>
     <audio id="equip_move" src="sfx/equip_move.wav"></audio>
-    <input type="file" id="fileInput">
-    <button id="downloadButton">Download Modified File</button>
-    <br>
+    <audio id="locked" src="sfx/locked.wav"></audio>
+    <audio id="move" src="sfx/move.wav"></audio>
+    <audio id="ready" src="sfx/ready.wav"></audio>
+    <header>
+        <input type="file" id="fileInput">
+        <div id="downloadButton"></div>
+        <img id="gramophone" src="images/gramophone.webp" class="unclicked" draggable="false">
+    </header>
     <br>
     <div id="tabStuff" class="tabs">
         <ul class="tab-links">
-            <li class="active"><a href="#levelTab">Level</a></li>
-            <li><a href="#playerTab">Inventory</a></li>
+            <li><a href="#levelTab">Level</a></li>
+            <li class="active"><a href="#inventoryTab">Inventory</a></li>
             <li><a href="#tab3">Tab 3</a></li>
         </ul>
-
         <div class="tab-content">
-            <div id="levelTab" class="tab active"></div>
-            <div id="playerTab" class="tab"></div>
+            <div id="levelTab" class="tab"></div>
+            <div id="inventoryTab" class="tab active"></div>
             <div id="tab3" class="tab"></div>
         </div>
     </div>
@@ -34,7 +41,7 @@
     <script src="level/variables.js"></script>
     <script src="level/check.js"></script>
     <script src="level/levelTab.js"></script>
-    <script src="player/playerTab.js"></script>
+    <script src="inventory/inventoryTab.js"></script>
     <script src="fileRead.js"></script>
     <script src="fileWrite.js"></script>
 </body>
