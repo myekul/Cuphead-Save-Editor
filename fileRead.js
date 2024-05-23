@@ -19,9 +19,12 @@ fileInput.addEventListener('change', (event) => {
             fileContents += e.target.result;
             readPlayerData(fileContents);
             readLevelData(fileContents);
-            downloadButton.innerHTML = `<button id="downloadButton">Download Modified File</button>`;
+            downloadButton.innerHTML = `<button id="downloadButton">Download<br>Modified File</button>`;
             tabStuff.classList.add("active");
             const tabs = document.querySelectorAll('.tab-links');
+            tabs.forEach(tab => {
+                tab.addEventListener('click', playSound)
+            });
             const checkboxes = document.querySelectorAll('input[type="checkbox"]');
             checkboxes.forEach(checkbox => {
                 checkbox.addEventListener('click', playSound);
@@ -116,8 +119,11 @@ function readLevelData(fileContents) {
     difficultyBeatenInput = document.querySelectorAll('[id^=difficultyBeaten_]');
     gradeInput = document.querySelectorAll('[id^=grade_]');
     bestTimeInput = document.querySelectorAll('[id^=bestTime_]');
+    completedAsChaliceP1Input = document.querySelectorAll('[id^=completedAsChaliceP1_]');
+    completedAsChaliceP2Input = document.querySelectorAll('[id^=completedAsChaliceP2_]');
     curseCharmP1Input = document.querySelectorAll('[id^=curseCharmP1_]');
     curseCharmP2Input = document.querySelectorAll('[id^=curseCharmP2_]');
-    allInput = [...playedInput, ...completedInput, ...difficultyBeatenInput, ...gradeInput, ...bestTimeInput, ...curseCharmP1Input, ...curseCharmP2Input];
+    allInput = [...playedInput, ...completedInput, ...difficultyBeatenInput, ...gradeInput, ...bestTimeInput, ...completedAsChaliceP1Input, ...completedAsChaliceP2Input, ...curseCharmP1Input, ...curseCharmP2Input];
     checkCompletion();
+    checkCurse();
 }

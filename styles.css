@@ -13,6 +13,11 @@
     src: url("fonts/cuphead-memphis.ttf") format("truetype");
 }
 
+@font-face {
+    font-family: "cuphead-vogue";
+    src: url("fonts/CupheadVogue-ExtraBold-merged.ttf") format("truetype");
+}
+
 body {
     font-family: "cuphead-memphis";
     background-color: var(--gray);
@@ -21,8 +26,16 @@ body {
 
 table {
     border-collapse: collapse;
-    margin-left: auto;
-    margin-right: auto;
+    margin: auto;
+}
+
+#levelTable {
+    border: 15px solid var(--lightcolor);
+}
+
+#levelTable th{
+    border-top: 5px solid var(--lightcolor);
+    height:20px;
 }
 
 #levelTable td {
@@ -57,7 +70,7 @@ td img {
     margin: auto;
 }
 
-.inventoryTable td {
+.item {
     width: 82px;
     height: 80px;
     position: relative;
@@ -69,6 +82,10 @@ td img {
     width: 95%;
 }
 
+.inventoryTable img:active {
+    width: 85%;
+}
+
 .inventoryTable img {
     width: 70px;
     transition: width 0.1s ease;
@@ -76,6 +93,11 @@ td img {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
+}
+
+.inventoryTable th {
+    font-size: 20px;
+    padding-top: 15px;
 }
 
 .changed {
@@ -90,6 +112,7 @@ td img {
     justify-content: center;
     align-items: center;
     margin: auto;
+    gap: 30px;
 }
 
 .player-column {
@@ -111,17 +134,19 @@ td img {
     float: left;
     margin: 0;
     padding: 0;
+    border: 5px solid var(--lightcolor);
 }
 
 .tab-links li a {
     padding: 10px 20px;
     display: block;
     text-decoration: none;
-    color: #000;
-    background: var(--lightcolor);
+    color: white;
+    background: var(--gray);
 }
 
 .tab-links li.active a {
+    color: black;
     background: var(--cuphead-yellow);
 }
 
@@ -176,10 +201,47 @@ header {
     align-items: center;
     justify-content: center;
     margin: auto;
-    gap:20px;
+    gap: 20px;
 }
-#fileInput,
-#downloadButton {
-    width:350px;
+
+footer {
+    background: var(--cuphead-yellow);
+    height: 100px;
+    margin-top: 100px;
+}
+
+#fileInput {
+    width: 330px;
     font-family: "cuphead-memphis";
+}
+
+#downloadButton {
+    width: 110px;
+    height: 40px;
+}
+
+#p1 {
+    border: 15px solid var(--lightcolor);
+    padding-bottom: 30px;
+    background-color: #693e3e;
+}
+
+#p2 {
+    display: none;
+    border: 15px solid var(--lightcolor);
+    padding-bottom: 30px;
+    background-color: #51693e;
+}
+
+button {
+    font-family: "cuphead-memphis";
+}
+
+#inventoryHeader {
+    display: flex;
+}
+
+#controls {
+    font-family: "cuphead-memphis";
+    width: 1%;
 }

@@ -8,7 +8,7 @@ function printLevelData(levelData) {
     for (let levelIndex = 0; levelIndex < levelCounts.length; levelIndex++) {
         output +=
             `<tr>
-                <td colspan=12; style="color:${colors[levelIndex]};background-color:${backgroundColors[levelIndex]};">${isles[levelIndex]}</td>
+                <th colspan=12; style="color:${colors[levelIndex]};background-color:${backgroundColors[levelIndex]};">${isles[levelIndex]}</th>
             </tr>
             <tr style="font-size:9px;">
                 <td style="width:60px;">Played</td>
@@ -62,16 +62,16 @@ function printLevelData(levelData) {
                             <input type="checkbox" id="completedAsChaliceP2_${levelID}" ${level.completedAsChaliceP2 ? 'checked' : ''}>
                         </td>
                         <td>
-                            <input type="checkbox" id="curseCharmP1_${levelID}" ${level.curseCharmP1 ? 'checked' : ''}>
+                            <input type="checkbox" id="curseCharmP1_${levelID}" onchange="curseCheckbox('curseCharmP1_${levelID}','p1');" ${level.curseCharmP1 ? 'checked' : ''}>
                         </td>
                         <td>
-                            <input type="checkbox" id="curseCharmP2_${levelID}" ${level.curseCharmP2 ? 'checked' : ''}>
+                            <input type="checkbox" id="curseCharmP2_${levelID}" onchange="curseCheckbox('curseCharmP2_${levelID}','p2');" ${level.curseCharmP2 ? 'checked' : ''}>
                         </td>
                     </tr>`;
             }
         }
     }
-    return output+'</table>';
+    return output + '</table>';
 }
 function updateBestTime(levelID, value) {
     const bestTime = document.getElementById("bestTime_" + levelID);

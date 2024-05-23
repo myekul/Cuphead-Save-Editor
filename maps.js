@@ -8,11 +8,11 @@ const weaponMap = new Map([
     [1614768724, "Crackshot"],
     [1487081743, "Converge"],
     [1568276855, "Twist-Up"],
+    [1458758183, "Arc"], // Unused
+    [1465906052, "Exploder"], // Unused
     [1457006169, "Machine Gun"],
     [1492758857, "Plane Bomb"],
-    [2147483647, "-"],
-    [1458758183,"Arc"],
-    [1465906052,"Exploder"]
+    [2147483647, "-"]
 ]);
 const charmMap = new Map([
     [1460832742, "Heart"],
@@ -22,10 +22,10 @@ const charmMap = new Map([
     [1500641115, "Twin Heart"],
     [1500621999, "Whetstone"],
     [1522153206, "Astral Cookie"],
-    [1569309672, "Divine Relic"],
+    [1569309672, "Relic"],
     [1568891766, "Heart Ring"],
-    [2147483647, "-"],
-    [1487056728, "Pit Saver"]
+    [1487056728, "Pit Saver"], // Unused
+    [2147483647, "-"]
 ]);
 const superMap = new Map([
     [1456815409, "Super Art 1: Energy Beam"],
