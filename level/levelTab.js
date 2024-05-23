@@ -32,16 +32,16 @@ function printLevelData(levelData) {
                 output +=
                     `<tr>
                         <td>
-                            <input type="checkbox" id="played_${levelID}" onchange="checkCompletion();" ${level.played ? 'checked' : ''}>
+                            <input type="checkbox" id="played_${levelID}" onchange="checkCompletion();modified('played_${levelID}');" ${level.played ? 'checked' : ''}>
                         </td>
                         <td>
-                            <input type="checkbox" id="completed_${levelID}" onchange="checkCompletion();" ${level.completed ? 'checked' : ''}>
+                            <input type="checkbox" id="completed_${levelID}" onchange="checkCompletion();modified('completed_${levelID}');" ${level.completed ? 'checked' : ''}>
                         </td>
                         <td>
-                            <select id="difficultyBeaten_${levelID}" onchange="difficultyBeaten_${levelID}.classList.add('changed')">${difficultyBeatenOptions}</select>
+                            <select id="difficultyBeaten_${levelID}" onchange="difficultyBeaten_${levelID}.classList.add('changed');modified('difficultyBeaten_${levelID}');">${difficultyBeatenOptions}</select>
                         </td>
                         <td>
-                            <select id="grade_${levelID}" onchange="grade_${levelID}.classList.add('changed')">${gradeOptions}</select>
+                            <select id="grade_${levelID}" onchange="grade_${levelID}.classList.add('changed');modified('grade_${levelID}');">${gradeOptions}</select>
                         </td>
                         <td>
                             <input id="bestTime_${levelID}" type="text" value="${level.getTime()}" onchange="updateBestTime(${levelID},this.value);" oninput="updateDisplayTime(${levelID},this.value);">
@@ -56,10 +56,10 @@ function printLevelData(levelData) {
                             ${level.getName()}
                         </td>
                         <td>
-                            <input type="checkbox" id="completedAsChaliceP1_${levelID}" ${level.completedAsChaliceP1 ? 'checked' : ''}>
+                            <input type="checkbox" id="completedAsChaliceP1_${levelID}" onchange="modified('completedAsChaliceP1_${levelID}')" ${level.completedAsChaliceP1 ? 'checked' : ''}>
                         </td>
                         <td>
-                            <input type="checkbox" id="completedAsChaliceP2_${levelID}" ${level.completedAsChaliceP2 ? 'checked' : ''}>
+                            <input type="checkbox" id="completedAsChaliceP2_${levelID}" onchange="modified('completedAsChaliceP2_${levelID}')" ${level.completedAsChaliceP2 ? 'checked' : ''}>
                         </td>
                         <td>
                             <input type="checkbox" id="curseCharmP1_${levelID}" onchange="curseCheckbox('curseCharmP1_${levelID}','p1');" ${level.curseCharmP1 ? 'checked' : ''}>
@@ -77,20 +77,14 @@ function updateBestTime(levelID, value) {
     const bestTime = document.getElementById("bestTime_" + levelID);
     bestTime.value = deserialize(serialize(value));
     bestTime.classList.add("changed");
+    modified("bestTime_" + levelID);
     checkCompletion();
 }
 function updateDisplayTime(levelID, value) {
     const displayTime = document.getElementById("displayTime_" + levelID);
     displayTime.innerText = display(deserialize(serialize(value)));
 }
-function downloadFile(content) {
-    const blob = new Blob([content], { type: 'text/plain' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = fileName;
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    URL.revokeObjectURL(url);
+function modified(id) {
+    let modifiedElement = document.getElementById(id);
+    modifiedArray.push(modifiedElement);
 }

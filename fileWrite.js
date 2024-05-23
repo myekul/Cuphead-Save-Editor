@@ -1,6 +1,6 @@
 function modifyLevels(file) {
     let prev = file.split("levelObjects")[0];
-    allInput.forEach(input => {
+    modifiedArray.forEach(input => {
         let elementType = input.id.split("_")[0];
         let levelID = parseInt(input.id.split('_')[1]);
         let levelObjects = file.split("levelObjects")[1];

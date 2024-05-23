@@ -2,9 +2,9 @@ function printInventoryData(playerData) {
     let output = `<div id=inventoryHeader>
     <pre id='controls'>
     Controls:
-    CLICK to add or remove items from inventory.
-    SHIFT+CLICK to equip primary weapon, super, and charm.
-    ALT+CLICK to equip secondary weapon.
+    LEFT CLICK to equip primary weapon, super, and charm.
+    RIGHT CLICK to equip secondary weapon.
+    SHIFT+CLICK to add or remove items from inventory.
     </pre>
     <table id="inventoryOptions">
         <tr>
@@ -101,32 +101,55 @@ function processRow(playerData, player, elementType, IDs, i) {
     return createImage(elementType, player, IDs[i], i, clickClass, equipClass);
 }
 function createImage(elementType, player, id, imageID, clickClass, equipClass) {
-    return `<td class="item"><img id="${player}_${elementType}_${id}" src="inventory/images/${elementType}s/${imageID + 1}.png" class="${clickClass} ${equipClass}" onclick="clicked('${elementType}','${player}',${id})" draggable="false"></td>`;
+    return `<td class="item">
+                <img
+                    id="${player}_${elementType}_${id}"
+                    src="inventory/images/${elementType}s/${imageID + 1}.png"
+                    class="${clickClass} ${equipClass}"
+                    onmousedown="clicked('${elementType}','${player}',${id})"
+                    onmouseup="rightClickUp('${elementType}','${player}',${id})"
+                    oncontextmenu="contextMenuPrevent()"
+                    draggable="false"
+                >
+            </td>`;
 }
 function clicked(elementType, player, id) {
     let element = document.getElementById(player + "_" + elementType + "_" + id);
     if (event.shiftKey) {
-        if (elementType == "weapon") {
-            weaponCheck(element, "primary");
+        if (id == "1458758183" || id == "1465906052" || id == "1487056728") {
+            locked.currentTime = 0;
+            locked.play();
         } else {
-            weaponCheck(element, elementType);
+            equip_move.currentTime = 0;
+            equip_move.play();
+            element.classList.toggle("unclicked");
+            element.classList.toggle("clicked");
         }
-    } else if (event.altKey) {
+    } else if (event.button === 2) {
+        event.preventDefault();
+        element.classList.remove("rightClickUp");
+        element.classList.add("rightClickDown");
         if (elementType == "weapon") {
             weaponCheck(element, "secondary");
         } else {
             locked.currentTime = 0;
             locked.play();
         }
-    } else if (id == "1458758183" || id == "1465906052" || id == "1487056728") {
-        locked.currentTime = 0;
-        locked.play();
     } else {
-        equip_move.currentTime = 0;
-        equip_move.play();
-        element.classList.toggle("unclicked");
-        element.classList.toggle("clicked");
+        if (elementType == "weapon") {
+            weaponCheck(element, "primary");
+        } else {
+            weaponCheck(element, elementType);
+        }
     }
+}
+function rightClickUp(elementType, player, id) {
+    let element = document.getElementById(player + "_" + elementType + "_" + id);
+    element.classList.remove("rightClickDown");
+    element.classList.add("rightClickUp");
+}
+function contextMenuPrevent() {
+    event.preventDefault();
 }
 function weaponCheck(element, equipType) {
     let player = element.id.split("_")[0];

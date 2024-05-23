@@ -1,3 +1,14 @@
+function downloadFile(content) {
+    const blob = new Blob([content], { type: 'text/plain' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = fileName;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+}
 document.getElementById('downloadButton').addEventListener('click', function () {
     const modifiedFile = modifyLevels(fileContents);
     downloadFile(modifiedFile, fileName);

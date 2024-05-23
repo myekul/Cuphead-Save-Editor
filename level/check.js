@@ -2,6 +2,7 @@
 function checkCompletion() {
     let currentIsle = 5;
     let isleClearedCheck = true;
+    let bestTimeInput = document.querySelectorAll('[id^=bestTime_]');
     bestTimeInput.forEach(input => {
         let levelID = parseInt(input.id.split('_')[1]);
         let played = document.getElementById("played_" + levelID);
@@ -18,7 +19,7 @@ function checkCompletion() {
         }
     });
     // Restoring display times
-    displayTimeInput = document.querySelectorAll('[id^=displayTime_]');
+    let displayTimeInput = document.querySelectorAll('[id^=displayTime_]');
     displayTimeInput.forEach(input => {
         let levelID = parseInt(input.id.split('_')[1]);
         let bestTime = document.getElementById("bestTime_" + levelID);
@@ -42,10 +43,10 @@ function checkCompletion() {
     }
 }
 function checkCurse() {
-    let curseCharmInput = [...curseCharmP1Input, ...curseCharmP2Input];
-    let player="p1";
+    let curseCharmInput = document.querySelectorAll('[id^=curseCharm]');
+    let player = "p1";
     curseCharmInput.forEach(input => {
-        if(parseInt(input.id.split('_')[0])=="curseCharmP2"){
+        if (parseInt(input.id.split('_')[0]) == "curseCharmP2") {
             player = "p2";
         }
         let levelID = parseInt(input.id.split('_')[1]);
@@ -70,7 +71,7 @@ function curseScoreGet(levelID, levelType, isle) {
         if (levelMap[levelID].name == "The Devil" || levelMap[levelID].name == "Chef Saltbaker") {
             output = 4;
         }
-        if (levelMap[levelID].name == "King Dice") {
+        if (levelMap[levelID].name == "King Dice" || levelMap[levelID].levelType == 3) {
             output = 1;
         }
     }
@@ -90,7 +91,7 @@ function updateRelic(player) {
         relic.src = "inventory/images/charms/11.png";
     }
 }
-function curseCheckbox(elementID,player) {
+function curseCheckbox(elementID, player) {
     let checkbox = document.getElementById(elementID);
     let levelID = parseInt(checkbox.id.split('_')[1]);
     let levelType = levelMap[levelID].levelType;
@@ -101,4 +102,5 @@ function curseCheckbox(elementID,player) {
         curseScore[player] -= curseScoreGet(levelID, levelType, isle);
     }
     updateRelic(player);
+    modified(elementID);
 }

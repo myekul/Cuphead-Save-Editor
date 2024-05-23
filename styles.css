@@ -33,9 +33,9 @@ table {
     border: 15px solid var(--lightcolor);
 }
 
-#levelTable th{
+#levelTable th {
     border-top: 5px solid var(--lightcolor);
-    height:20px;
+    height: 20px;
 }
 
 #levelTable td {
@@ -78,21 +78,27 @@ td img {
     font-size: 25px;
 }
 
-.inventoryTable img:hover {
-    width: 95%;
-}
-
-.inventoryTable img:active {
-    width: 85%;
-}
-
-.inventoryTable img {
+.inventoryTable img{
     width: 70px;
     transition: width 0.1s ease;
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
+}
+
+.rightClickUp{
+    width:70px;
+}
+
+.inventoryTable img:hover,
+.rightClickHover{
+    width: 95%;
+}
+
+.inventoryTable img:active,
+.rightClickDown {
+    width: 85% !important;
 }
 
 .inventoryTable th {
@@ -208,6 +214,7 @@ footer {
     background: var(--cuphead-yellow);
     height: 100px;
     margin-top: 100px;
+
 }
 
 #fileInput {
