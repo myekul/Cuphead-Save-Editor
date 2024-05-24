@@ -45,8 +45,13 @@ function modifyLevels(file) {
 function modifyInventory(file) {
     let prev = file.split("loadouts")[0];
     let loadouts = file.split("loadouts")[1];
-    loadout("p1", file);
-    loadout("p2", file);
+    let primaryPrev=loadouts.split('"primaryWeapon":')[0];
+    let primaryNext=loadouts.split(",")[1];
+    console.log(loadouts.split(":")[3]);
+
+    loadout("p1", loadouts);
+    loadout("p2", loadouts.split("player2")[1]);
+    file = prev+"loadouts";
 }
 function loadout(player, file) {
     

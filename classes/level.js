@@ -26,7 +26,7 @@ class Level {
         return difficultyBeatenMap.get(this.difficultyBeaten)
     }
     getTime() {
-        return this.bestTime !== "3.4028234663852887e38" ? deserialize(this.bestTime) : ""
+        return this.bestTime !== nullTime ? deserialize(this.bestTime) : ""
     }
     getLevelType() {
         const levelInfo = levelMap[this.levelID];

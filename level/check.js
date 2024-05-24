@@ -22,8 +22,13 @@ function checkCompletion() {
     let displayTimeInput = document.querySelectorAll('[id^=displayTime_]');
     displayTimeInput.forEach(input => {
         let levelID = parseInt(input.id.split('_')[1]);
-        let bestTime = document.getElementById("bestTime_" + levelID);
-        input.innerText = display(deserialize(serialize(bestTime.value)));
+        if (levelMap[levelID].levelType < 2) {
+            let bestTime = document.getElementById("bestTime_" + levelID);
+            input.innerText = display(deserialize(serialize(bestTime.value)));
+        } else {
+            input.innerText = "-";
+            input.style.textAlign = "center";
+        }
         // Applying question marks for unchecked played and completion boxes
         let played = document.getElementById("played_" + levelID);
         let completed = document.getElementById("completed_" + levelID);
@@ -43,6 +48,16 @@ function checkCompletion() {
     }
 }
 function checkCurse() {
+    let played_angelAndDemon = document.getElementById("played_1616405510");
+    let completed_angelAndDemon = document.getElementById("completed_1616405510");
+    played_angelAndDemon.addEventListener("change", function (event) {
+        updateRelic("p1");
+        updateRelic("p2");
+    })
+    completed_angelAndDemon.addEventListener("change", function (event) {
+        updateRelic("p1");
+        updateRelic("p2");
+    })
     let curseCharmInput = document.querySelectorAll('[id^=curseCharm]');
     let player = "p1";
     curseCharmInput.forEach(input => {
@@ -56,7 +71,8 @@ function checkCurse() {
             curseScore[player] += curseScoreGet(levelID, levelType, isle);
         }
     });
-    updateRelic(player);
+    updateRelic("p1");
+    updateRelic("p2");
 }
 function curseScoreGet(levelID, levelType, isle) {
     output = 0;
@@ -71,15 +87,20 @@ function curseScoreGet(levelID, levelType, isle) {
         if (levelMap[levelID].name == "The Devil" || levelMap[levelID].name == "Chef Saltbaker") {
             output = 4;
         }
-        if (levelMap[levelID].name == "King Dice" || levelMap[levelID].levelType == 3) {
+        if (levelMap[levelID].name == "King Dice") {
             output = 1;
         }
+    } else if (levelMap[levelID].levelType == 3) {
+        output = 1;
     }
     return output;
 }
 function updateRelic(player) {
     let relic = document.getElementById(player + "_charm_" + 1569309672);
-    if (curseScore[player] >= 16) {
+    let angelAndDemon = document.getElementById("displayTime_1616405510");
+    if (angelAndDemon.innerText == "?") {
+        relic.src = "inventory/images/charms/8.png";
+    } else if (curseScore[player] >= 16) {
         relic.src = "inventory/images/charms/15.png";
     } else if (curseScore[player] >= 12) {
         relic.src = "inventory/images/charms/14.png";

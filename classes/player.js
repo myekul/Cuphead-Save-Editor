@@ -1,8 +1,8 @@
 class Player {
     constructor(loadout, money, newPurchase, weapons, supers, charms, statictics) {
         // Loadout
-        this.primaryWeapon = loadout[0];
-        this.secondaryWeapon = loadout[1];
+        this.primary = loadout[0];
+        this.secondary = loadout[1];
         this.super = loadout[2];
         this.charm = loadout[3];
 

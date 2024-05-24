@@ -5,7 +5,6 @@ const inventoryTab = document.getElementById('inventoryTab');
 const downloadButton = document.getElementById('downloadButton');
 let fileName = "";
 let fileContents = "";
-// Listens to "fileInput" HTML element for change
 fileInput.addEventListener('change', (event) => {
     const file = event.target.files[0];
     const reader = new FileReader();

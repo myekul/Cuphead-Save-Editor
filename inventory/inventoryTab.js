@@ -8,20 +8,24 @@ function printInventoryData(playerData) {
     </pre>
     <table id="inventoryOptions">
         <tr>
-            <td><input id="p2toggle" type="checkbox" onchange="p2toggle();"></td>
+            <td><input id="p2toggle" type="checkbox" onchange="toggleVisibility('tooltip');toggleVisibility('p2');"></td>
             <td>Show P2</td>
         </tr>
         <tr>
-            <td><input id="showUnused" type="checkbox" onchange="showUnused();"></td>
+            <td><input id="showUnused" type="checkbox" onchange="toggleUnused();"></td>
             <td>Show unused items</td>
         </tr>
     </table>
     </div>`;
-    output += `<div id="flex-container">` + anInventory(playerData[0], "p1") + anInventory(playerData[1], "p2") + `</div>`;
+    output += `<div id="flex-container">` + anInventory(playerData[0], "p1") + tooltip() + anInventory(playerData[1], "p2") + `</div>`;
     return output;
 }
 function anInventory(playerData, player) {
-    let output = `<div id="${player}" class="player-column">`;
+    let output = `<div id="${player}" class="player-column`;
+    if (player == "p2") {
+        output += " hide"
+    }
+    output += '">'
     const weaponIDs = Array.from(weaponMap.keys()).map(String);
     const charmIDs = Array.from(charmMap.keys()).map(String);
     const superIDs = Array.from(superMap.keys()).map(String);
@@ -29,7 +33,7 @@ function anInventory(playerData, player) {
     output +=
         `<table class="inventoryTable">
             <tr>
-                <th colspan=3>SUPER ART</th>
+                <th colspan=3>SUPER</th>
             </th>
             <tr>`;
     for (let i = 0; i < 3; i++) {
@@ -58,10 +62,11 @@ function nineTable(playerData, player, elementType, IDs) {
     for (let i = 5; i < 9; i++) {
         output += processRow(playerData, player, elementType, IDs, i);
     }
+    // Unused weapons / charm
     output +=
         `</tr>
     </table>
-    <table id='${player}_${elementType}sUnused' class="inventoryTable" style="display:none;">
+    <table id='${player}_${elementType}sUnused' class="inventoryTable hide">
         <tr>`;
     output += processRow(playerData, player, elementType, IDs, 9);
     if (elementType == "weapon") {
@@ -71,7 +76,6 @@ function nineTable(playerData, player, elementType, IDs) {
         </table>`;
     return output;
 }
-let currentEquip = {};
 function processRow(playerData, player, elementType, IDs, i) {
     let clickClass = "unclicked";
     let equipClass = "unequipped";
@@ -80,32 +84,23 @@ function processRow(playerData, player, elementType, IDs, i) {
             clickClass = "clicked";
         }
     }
-    if (elementType == "weapon") {
-        let primaryID = playerData.primaryWeapon;
-        if (primaryID == IDs[i]) {
-            equipClass = "primary";
-            currentEquip[player + "primary"] = player + "_weapon_" + primaryID;
+    let elementTypes = ["primary", "secondary", "super", "charm"];
+    elementTypes.forEach(type => {
+        let ID = playerData[type];
+        if (ID == IDs[i]) {
+            equipClass = type;
+            currentEquip[player + type] = ID;
         }
-        let secondaryID = playerData.secondaryWeapon;
-        if (secondaryID == IDs[i]) {
-            equipClass = "secondary";
-            currentEquip[player + "secondary"] = player + "_weapon_" + secondaryID;
-        }
-    } else {
-        let elementID = playerData[elementType];
-        if (elementID == IDs[i]) {
-            equipClass = elementType;
-            currentEquip[player + elementType] = player + "_" + elementType + "_" + elementID;
-        }
-    }
-    return createImage(elementType, player, IDs[i], i, clickClass, equipClass);
+    });
+    return createImage(elementType, player, IDs[i], i + 1, clickClass, equipClass);
 }
 function createImage(elementType, player, id, imageID, clickClass, equipClass) {
     return `<td class="item">
                 <img
                     id="${player}_${elementType}_${id}"
-                    src="inventory/images/${elementType}s/${imageID + 1}.png"
+                    src="inventory/images/${elementType}s/${imageID}.png"
                     class="${clickClass} ${equipClass}"
+                    onmouseover="changeTooltip(${id},'${elementType}',${imageID})"
                     onmousedown="clicked('${elementType}','${player}',${id})"
                     onmouseup="rightClickUp('${elementType}','${player}',${id})"
                     oncontextmenu="contextMenuPrevent()"
@@ -116,7 +111,7 @@ function createImage(elementType, player, id, imageID, clickClass, equipClass) {
 function clicked(elementType, player, id) {
     let element = document.getElementById(player + "_" + elementType + "_" + id);
     if (event.shiftKey) {
-        if (id == "1458758183" || id == "1465906052" || id == "1487056728") {
+        if (id == "1458758183" || id == "1465906052" || id == "1487056728") { // The three unused items
             locked.currentTime = 0;
             locked.play();
         } else {
@@ -153,46 +148,60 @@ function contextMenuPrevent() {
 }
 function weaponCheck(element, equipType) {
     let player = element.id.split("_")[0];
+    let elementType = element.id.split("_")[1];
     let equipTypeID = currentEquip[player + equipType];
-    let equipTypeReference = document.getElementById(equipTypeID);
+    let equipTypeReference = document.getElementById(player + "_" + elementType + "_" + equipTypeID);
     if (element.classList.contains(equipType)) {
         element.classList.remove(equipType);
-        currentEquip[player + equipType] = null;
+        currentEquip[player + equipType] = nullItem;
     } else {
-        if (equipTypeID != null) {
+        if (equipTypeID != nullItem) {
             equipTypeReference.classList.remove(equipType);
         }
-        currentEquip[player + equipType] = element.id;
+        currentEquip[player + equipType] = parseInt(element.id.split("_")[2]);
         element.classList.add(equipType);
     }
     category_select.currentTime = 0;
     category_select.play();
     element.classList.toggle("unequipped");
 }
-function p2toggle() {
-    let p2toggle = document.getElementById("p2toggle");
-    let p2 = document.getElementById("p2");
-    if (p2toggle.checked) {
-        p2.style.display = "block";
-    } else {
-        p2.style.display = "none";
-    }
+function toggleUnused() {
+    toggleTableVisibility("p1_weaponsUnused");
+    toggleTableVisibility("p2_weaponsUnused");
+    toggleTableVisibility("p1_charmsUnused");
+    toggleTableVisibility("p2_charmsUnused");
 }
-function showUnused() {
-    let showUnused = document.getElementById("showUnused");
-    let p1_weaponsUnused = document.getElementById("p1_weaponsUnused");
-    let p2_weaponsUnused = document.getElementById("p2_weaponsUnused");
-    let p1_charmsUnused = document.getElementById("p1_charmsUnused");
-    let p2_charmsUnused = document.getElementById("p2_charmsUnused");
-    if (showUnused.checked) {
-        p1_weaponsUnused.style.display = "table";
-        p2_weaponsUnused.style.display = "table";
-        p1_charmsUnused.style.display = "table";
-        p2_charmsUnused.style.display = "table";
-    } else {
-        p1_weaponsUnused.style.display = "none";
-        p2_weaponsUnused.style.display = "none";
-        p1_charmsUnused.style.display = "none";
-        p2_charmsUnused.style.display = "none";
+function toggleVisibility(elementID) {
+    let element = document.getElementById(elementID);
+    element.classList.toggle("show");
+    element.classList.toggle("hide");
+}
+function toggleTableVisibility(elementID) {
+    let element = document.getElementById(elementID);
+    element.classList.toggle("showTable");
+    element.classList.toggle("hide");
+}
+function tooltip() {
+    let output = `
+    <div id="tooltip" class="show">
+        <img id="tooltipIcon">
+        <div id="tooltipTitle"></div>
+        <div id="tooltipSubtitle"></div>
+        <div id="tooltipDescription"></div>
+    </div>`;
+    return output;
+}
+function changeTooltip(id, elementType, imageID) {
+    let tooltip = document.getElementById("tooltip");
+    if (!tooltip.classList.contains("hide")) {
+        let item = tooltipMap[id]
+        let icon = document.getElementById("tooltipIcon");
+        let title = document.getElementById("tooltipTitle");
+        let subtitle = document.getElementById("tooltipSubtitle");
+        let description = document.getElementById("tooltipDescription");
+        icon.src = "inventory/images/" + elementType + "s/" + imageID + ".png"
+        title.innerText = item.name;
+        subtitle.innerText = item.subtitle;
+        description.innerHTML = item.description;
     }
 }

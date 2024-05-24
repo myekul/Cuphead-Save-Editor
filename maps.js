@@ -14,6 +14,12 @@ const weaponMap = new Map([
     [1492758857, "Plane Bomb"],
     [2147483647, "-"]
 ]);
+const superMap = new Map([
+    [1456815409, "Super Art 1: Energy Beam"],
+    [1495012282, "Super Art 2: Invincibility"],
+    [1467617939, "Super Art 3: Giant Ghost"],
+    [2147483647, "-"]
+]);
 const charmMap = new Map([
     [1460832742, "Heart"],
     [1460880866, "Coffee"],
@@ -24,15 +30,132 @@ const charmMap = new Map([
     [1522153206, "Astral Cookie"],
     [1569309672, "Relic"],
     [1568891766, "Heart Ring"],
-    [1487056728, "Pit Saver"], // Unused
+    [1487056728, "Shield"], // Unused
     [2147483647, "-"]
 ]);
-const superMap = new Map([
-    [1456815409, "Super Art 1: Energy Beam"],
-    [1495012282, "Super Art 2: Invincibility"],
-    [1467617939, "Super Art 3: Giant Ghost"],
-    [2147483647, "-"]
-]);
+const tooltipMap = {
+    "1456773641": {
+        name: "PEASHOOTER",
+        subtitle: "EX: Mega Blast",
+        description: "Standard issue weapon. Long range<br>with average damage."
+    },
+    "1456773649": {
+        name: "SPREAD",
+        subtitle: "EX: Eight Way",
+        description: "Short range with great damage - if<br>you can keep close to your target."
+    },
+    "1460621839": {
+        name: "CHASER",
+        subtitle: "EX: Chaos Orbit",
+        description: "Long range with below-average<br>damage. No aiming required."
+    },
+    "1467024095": {
+        name: "LOBBER",
+        subtitle: "EX: Kablooey",
+        description: "Medium range and good damage with<br>a slower rate of fire."
+    },
+    "1466416941": {
+        name: "CHARGE",
+        subtitle: "EX: Radial Barrage",
+        description: "Hold attack to increase damage. No<br>rapid fire, so precision is key."
+    },
+    "1466518900": {
+        name: "ROUNDABOUT",
+        subtitle: "EX: Jumbo Rebound",
+        description: "Great coverage with average damage.<br>Aim backward for maximum range."
+    },
+    "1614768724": {
+        name: "CRACKSHOT",
+        subtitle: "EX: P. Turret",
+        description: "Straight shot with good damage. Breaks<br>into weaker aimed projectiles."
+    },
+    "1487081743": {
+        name: "CONVERGE",
+        subtitle: "EX: Electro-Bolt",
+        description: "Full-screen piercing 3-way shot. Hold<br>lock button to narrow spread."
+    },
+    "1568276855": {
+        name: "TWIST-UP",
+        subtitle: "EX: Cyclone Spiral",
+        description: "Rapid-fire shot with arced pathway and<br>average damage."
+    },
+    "1458758183": {
+        name: "ARC",
+        subtitle: "",
+        description: ""
+    },
+    "1465906052": {
+        name: "EXPLODER",
+        subtitle: "",
+        description: ""
+    },
+    "1456815409": {
+        name: "SUPER ART I",
+        subtitle: "Energy Beam",
+        description: "A devastating attack spills from your<br>head. Horizontal only (ground or air)."
+    },
+    "1495012282": {
+        name: "SUPER ART II",
+        subtitle: "Invincibility",
+        description: "Cross the astral plane to become<br>invulnerable for a short time."
+    },
+    "1467617939": {
+        name: "SUPER ART III",
+        subtitle: "Giant Ghost",
+        description: "Maneuver your spirit and body<br>simultaneously for maximum damage."
+    },
+    "1460832742": {
+        name: "HEART",
+        subtitle: "Extra Hit Point",
+        description: "Adds an additional hit point but<br>lightly weakens your attack power."
+    },
+    "1460880866": {
+        name: "COFFEE",
+        subtitle: "Autofill Meter",
+        description: "Super meter continuously fills - in<br>addition to what you earn."
+    },
+    "1461001046": {
+        name: "SMOKE BOMB",
+        subtitle: "Invisible Dash",
+        description: "You will not take damage during a<br>dash. A great defense maneuver."
+    },
+    "1487051212": {
+        name: "P. SUGAR",
+        subtitle: "Automatic Parry",
+        description: "The first parry move is automatic -<br>all you need to do is jump."
+    },
+    "1500641115": {
+        name: "TWIN HEART",
+        subtitle: "Extra Hit Points",
+        description: "Adds two additional hit points but<br>weakens your attack power."
+    },
+    "1500621999": {
+        name: "WHETSTONE",
+        subtitle: "Parry Attack",
+        description: "Your first parry move doubles as a<br>damaging axe attack."
+    },
+    "1522153206": {
+        name: "ASTRAL COOKIE",
+        subtitle: "Play As Ms. Chalice",
+        description: "Grants access to her double jump, dash<br>parry, and invincible roll."
+    },
+    "1569309672": {
+        name: "DIVINE RELIC",
+        subtitle: "Bestows Power",
+        description: "Wondrous talisman that grants a variety<br>of abilities."
+    },
+    "1568891766": {
+        name: "HEART RING",
+        subtitle: "Parry for HP",
+        description: "Gain 1 HP on your first, third, and sixth<br>parry."
+    },
+    "1487056728": {
+        name: "SHIELD",
+        subtitle: "",
+        description: ""
+    }
+};
+
 const levelMap = {
     2: { isle: 3, levelType: 0, priority: 15, name: "Captain Brineybeard" },
     5: { isle: 3, levelType: 0, priority: 20, name: "Phantom Express" },

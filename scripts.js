@@ -11,6 +11,7 @@ function downloadFile(content) {
 }
 document.getElementById('downloadButton').addEventListener('click', function () {
     const modifiedFile = modifyLevels(fileContents);
+    // modifyInventory(fileContents);
     downloadFile(modifiedFile, fileName);
 });
 const tabs = document.querySelectorAll('.tab-links li');
