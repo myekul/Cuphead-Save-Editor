@@ -16,18 +16,7 @@ fileInput.addEventListener('change', (event) => {
         fileName += file.name;
         if (fileName.includes("cuphead_player_data_v1_slot_")) {
             fileContents += e.target.result;
-            readPlayerData(fileContents);
-            readLevelData(fileContents);
-            downloadButton.innerHTML = `<button id="downloadButton">Download<br>Modified File</button>`;
-            tabStuff.classList.add("active");
-            const tabs = document.querySelectorAll('.tab-links');
-            tabs.forEach(tab => {
-                tab.addEventListener('click', playSound)
-            });
-            const checkboxes = document.querySelectorAll('input[type="checkbox"]');
-            checkboxes.forEach(checkbox => {
-                checkbox.addEventListener('click', playSound);
-            });
+            read();
         }
         else {
             downloadButton.innerHTML = "";
@@ -36,6 +25,24 @@ fileInput.addEventListener('change', (event) => {
     };
     reader.readAsText(file);
 });
+function preset(){
+    fileContents=threeHundred;
+    read();
+}
+function read() {
+    readPlayerData(fileContents);
+    readLevelData(fileContents);
+    downloadButton.innerHTML = `<button id="downloadButton">Download<br>Modified File</button>`;
+    tabStuff.classList.add("active");
+    const tabs = document.querySelectorAll('.tab-links');
+    tabs.forEach(tab => {
+        tab.addEventListener('click', playSound)
+    });
+    const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+    checkboxes.forEach(checkbox => {
+        checkbox.addEventListener('click', playSound);
+    });
+}
 function readPlayerData(fileContents) {
     let playerData = [null, null];
 
